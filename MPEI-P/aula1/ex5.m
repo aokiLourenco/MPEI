@@ -1,9 +1,15 @@
-function prob = ex5(p, n, x, N)
+function prob = ex5(p, l, c, N)
+    sucessos = 0;
 
-lancamentos = rand(n, N) > p;
+    for i = 1:N
+        resultados = rand(1, l) < p;
 
-sucessos = sum(lancamentos) == x;
+        caras_obtidas = sum(resultados);
 
-prob = sum(sucessos) / N;
+        if caras_obtidas == c
+            sucessos = sucessos +1;
+        end
+    end
 
+    prob = sucessos / N;
 end
