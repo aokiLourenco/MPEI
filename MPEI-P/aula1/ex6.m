@@ -1,6 +1,6 @@
 p = 0.5;
-k = 2;
-n = 3;
+k = 6;
+n = 20;
 
 % Cálculo analítico para probabilidade em séries de experiencias de
 % Bernoulli
