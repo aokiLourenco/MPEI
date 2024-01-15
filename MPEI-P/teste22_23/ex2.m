@@ -11,7 +11,8 @@ n = 300; % número de elementos
 p = 0.03; % falsos posistivos
 
 % calcula o tamanho adequado do filtro de Bloom
-m = round(-n/log(1-p));
+m = ceil(-n/log(1-p));
+
 disp(m);
 
 % ---------------------------------------------
@@ -24,19 +25,20 @@ disp('b)');
 
 Bloom = BloomInit(m); % inicializa o filtro de Bloom
 chars = 'a':'z'; % caracteres a usar na geração de palavras
+cellStrings = cell(1, m);
 
 charsMin = 5; 
 charsMax = 8;
 
 keys = genKeys(m, charsMin, charsMax, chars); % gera as palavras aleatórias
 
-for i = 1:m
+for i = 1:n
     Bloom = BloomInsert(Bloom, keys{i}, k); % insere as palavras no filtro de Bloom
 end
 
 count = 0;
 
-for j = 1:200  % Buscar as 10k palavras que são diferentes
+for j = 301:m
     if BloomVerify(Bloom, keys{j}, k) == true % verifica se as palavras estão no filtro de Bloom
         count = count + 1;
     end
@@ -44,4 +46,4 @@ end
 
 probFalsoPositivo = count / m; % calcula a probabilidade de falsos positivos
 
-disp("Falsos positivos: " + probFalsoPositivo);
+disp("Falsos positivos: " + probFalsoPositivo*100 + "%");
