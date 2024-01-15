@@ -44,5 +44,5 @@ fprintf('Probabilidade de passar pelo percurso mais pequeno: %f\n', soma/N);
 disp('c)');
 
 R = T(6, 1:5);
-B = R*F;
+B = R * F;
 disp(B(1,1));

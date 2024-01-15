@@ -1,12 +1,19 @@
 %% a)
 disp('a)');
-m = 300; % número de elementos
+
+% n = ceil(m / (-k / log(1 - exp(log(p) / k))))
+% p = pow(1 - exp(-k / (m / n)), k)
+% m = ceil((n * log(p)) / log(1 / pow(2, log(2))));
+% k = round((m / n) * log(2));
+
+k = 1; % número de funções de dispersão
+n = 300; % número de elementos
 p = 0.03; % falsos posistivos
 
 % calcula o tamanho adequado do filtro de Bloom
-n = ceil((m * log(p)) / log(1 / (2 ^ log(2))));
+m = round(-n/log(1-p));
+disp(m);
 
-disp(n);
 % ---------------------------------------------
 %% b) Inicializar o flitro de Bloom usando o tamanho calculado anterirormente. De seguida inclua no filtro 300 palavras diferentes
 % geradas aleatoriamente com as caracteristicas definidas acima. Use a função de dispersão default providenciada pela função
@@ -15,49 +22,26 @@ disp(n);
 % um conjunto de adequado de palavras.
 disp('b)');
 
-Bloom = BloomInit(n); % inicializa o filtro de Bloom
+Bloom = BloomInit(m); % inicializa o filtro de Bloom
 chars = 'a':'z'; % caracteres a usar na geração de palavras
-cellStrings = cell(1, n); % inicializa o array de palavras
 
-for i = 1:length(cellStrings)
-    sizeA = rand() < 0.4;
+charsMin = 5; 
+charsMax = 8;
 
-    size = 0;
+keys = genKeys(m, charsMin, charsMax, chars); % gera as palavras aleatórias
 
-    if sizeA == 1
-        size = 5;
-    else
-        size = 8;
-    end
-
-    word = '';
-
-    for j = 1:size
-        word = strcat(word, chars(randi(length(chars))));
-    end
-    cellStrings{i} = word;
+for i = 1:m
+    Bloom = BloomInsert(Bloom, keys{i}, k); % insere as palavras no filtro de Bloom
 end
 
-chaves = cellStrings(1:300);
+count = 0;
 
-for i = 1:length(chaves)
-    chave = char(chaves{i});
-    code = mod(string2hash(chave), length(Bloom)) + 1;
-    Bloom(code) = 1;
-end
-
-chaves = cellStrings(301:n);
-
-falsosPositivos = 0;
-
-for i = 1:length(chaves)
-    chave = char(chaves{i});
-    code = mod(string2hash(chave), length(Bloom)) + 1;
-    resultado = Bloom(code);
-
-    if resultado == 1
-        falsosPositivos = falsosPositivos + 1;
+for j = 1:200  % Buscar as 10k palavras que são diferentes
+    if BloomVerify(Bloom, keys{j}, k) == true % verifica se as palavras estão no filtro de Bloom
+        count = count + 1;
     end
 end
 
-disp(falsosPositivos / length(chaves) * 100);
+probFalsoPositivo = count / m; % calcula a probabilidade de falsos positivos
+
+disp("Falsos positivos: " + probFalsoPositivo);
