@@ -15,10 +15,12 @@ for FraseN=1:Nu
     Frase = fraseCell{1,FraseN};
     for hashFuncN=1:k
         hashArr=zeros(1,strlength(Frase)-shinglesize+1);
+
         for ShingleN=1:strlength(Frase)-shinglesize+1
             key = char(Frase(ShingleN:(ShingleN+shinglesize-1)));
             hashArr(ShingleN) = hf1(key,hashFuncN)+1;
         end
+        
         FraseMinHash(FraseN,hashFuncN) = min(hashArr);
     end
 end

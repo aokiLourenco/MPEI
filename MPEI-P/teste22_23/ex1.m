@@ -40,7 +40,7 @@ end
 fprintf('Probabilidade de passar pelo percurso mais pequeno: %f\n', soma/N);
 
 %%----------------------------------------------
-% c)
+% c) Determinar o número médio de casas percorridas desde o início até ao fim do jogo (incluindo a casa inicial e a casa final).
 disp('c)');
 
 R = T(6, 1:5);
