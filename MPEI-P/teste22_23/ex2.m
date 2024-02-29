@@ -46,4 +46,4 @@ end
 
 probFalsoPositivo = count / m; % calcula a probabilidade de falsos positivos
 
-disp("Falsos positivos: " + probFalsoPositivo*100 + "%");
+fprintf("Probabilidade de falsos positivos: %f%%\n", probFalsoPositivo*100);
